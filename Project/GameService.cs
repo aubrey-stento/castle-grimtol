@@ -17,13 +17,14 @@ namespace CastleGrimtol.Project
             //splits the user input on the space
             GetUserInput.ToLower();
             string[] command = GetUserInput.Split(" ");
-            // string command = inputArr[0]
+            
             // string value;
             // if(inputArr.length > 1)
             // switches based on user input
             switch(command[0])
             {
             case "go":
+            //  if(inputArr.length > 1)
             Go(command[1]);
             break;
             case "take":
@@ -50,7 +51,19 @@ namespace CastleGrimtol.Project
         public void Go(string direction)
         {
         Console.WriteLine("You are at go");
-        //create a method on the Room class that checks if the exit is a valid exit and returns the room if it is
+        //check if the exit is a valid exit and returns the room and description if it is
+        if(CurrentRoom.Exits.ContainsKey(direction))
+        {
+
+        CurrentRoom = CurrentRoom.Exits[direction];
+        Look();
+        
+        }
+        else{
+            System.Console.WriteLine("FAIL!!!");
+
+        }
+        
 
         }
 
@@ -82,18 +95,25 @@ namespace CastleGrimtol.Project
         public void Setup()
         {
         Room entrance = new Room("Entrance", "Welcome to the Castle. A horrible thunderstorm has just begun, and the princess is locked in the castle chamber. Will you save her before the chamber floods? What will you do next?");
-        Room livingRoom = new Room("LivingRoom","You are now in the living room. The princess is hidden in one of the rooms in this castle. The door is locked, and requires a key to open. Choose an unlocked room door to continue.");
+        Room livingRoom = new Room("LivingRoom","You are now in the living room. The princess is hidden in one of the rooms in this castle. While the door is unlocked, the princess is locked in a cage which requires a key to unlock");
         Room basement = new Room("Basement", "The stairs down to the basement are extremely slippery. You slip, fall, and are forced to leave the castle.");
         Room chamber = new Room("Chamber", "You have successfully used the key to unlock the chamber. You saved the princess before the chamber flooded.");
         Room kitchen = new Room("Kitchen", "Welcome to the Kitchen. In the fridge, there are several chocolate cakes. Eat them to find the cake with the hidden item. Use that hidden item to unlock the locked door from the living room.");
 
-        // Item key = new Item("key", "");
+        Item key = new Item("key", "This is the key");
 
         entrance.Exits.Add("east", livingRoom);
+        livingRoom.Exits.Add("west", entrance);
+
         livingRoom.Exits.Add("east", kitchen);
-        livingRoom.Exits.Add("south", chamber);
-        livingRoom.Exits.Add("north", basement);
         kitchen.Exits.Add("west", livingRoom);
+
+        livingRoom.Exits.Add("south", chamber);
+        chamber.Exits.Add("north", livingRoom);
+
+        livingRoom.Exits.Add("north", basement);
+
+        kitchen.Items.Add(key);
 
 
 
@@ -102,8 +122,13 @@ namespace CastleGrimtol.Project
         }
 
         public void StartGame()
-        {   bool playing = true;
-
+        {   
+            bool playing = true;
+            while(playing)
+            {
+                //get user input
+                GetUserInput();
+            }
         
         }
 
