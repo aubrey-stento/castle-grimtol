@@ -9,6 +9,7 @@ namespace CastleGrimtol.Project
     {
         public IRoom CurrentRoom { get; set; }
         public Player CurrentPlayer { get; set; }
+        public bool Playing { get; private set; }
 
         public void GetUserInput()
         {
@@ -28,7 +29,7 @@ namespace CastleGrimtol.Project
             Go(command[1]);
             break;
             case "take":
-            TakeItem(GetUserInput);
+            TakeItem(command[1]);
             break;
             case "use":
             UseItem(GetUserInput);
@@ -42,6 +43,9 @@ namespace CastleGrimtol.Project
             case "look":
             Look();
             break;
+            case "inventory":
+            Inventory();
+            break;
 
             }
 
@@ -50,7 +54,6 @@ namespace CastleGrimtol.Project
 
         public void Go(string direction)
         {
-        Console.WriteLine("You are at go");
         //check if the exit is a valid exit and returns the room and description if it is
         if(CurrentRoom.Exits.ContainsKey(direction))
         {
@@ -60,7 +63,7 @@ namespace CastleGrimtol.Project
         
         }
         else{
-            System.Console.WriteLine("FAIL!!!");
+            System.Console.WriteLine("No exit exists in that direction! Try Again.");
 
         }
         
@@ -74,7 +77,12 @@ namespace CastleGrimtol.Project
 
         public void Inventory()
         {
-            
+            //iterate over the Inventory list
+            foreach(var item in CurrentPlayer.Inventory)
+            {
+            Console.WriteLine($"Item: {CurrentPlayer.Inventory}");
+
+            }
         }
 
         public void Look()
@@ -84,7 +92,8 @@ namespace CastleGrimtol.Project
 
         public void Quit()
         {
-            bool playing = false;
+            Playing = false;
+            Console.WriteLine("Would you like to play again?");
         }
 
         public void Reset()
@@ -97,8 +106,8 @@ namespace CastleGrimtol.Project
         Room entrance = new Room("Entrance", "Welcome to the Castle. A horrible thunderstorm has just begun, and the princess is locked in the castle chamber. Will you save her before the chamber floods? What will you do next?");
         Room livingRoom = new Room("LivingRoom","You are now in the living room. The princess is hidden in one of the rooms in this castle. While the door is unlocked, the princess is locked in a cage which requires a key to unlock");
         Room basement = new Room("Basement", "The stairs down to the basement are extremely slippery. You slip, fall, and are forced to leave the castle.");
-        Room chamber = new Room("Chamber", "You have successfully used the key to unlock the chamber. You saved the princess before the chamber flooded.");
-        Room kitchen = new Room("Kitchen", "Welcome to the Kitchen. In the fridge, there are several chocolate cakes. Eat them to find the cake with the hidden item. Use that hidden item to unlock the locked door from the living room.");
+        Room chamber = new Room("Chamber", "You are now in the chamber. If you have it, se the key to unlock the cage and save the princess. If you dont have the key, go find it and return once it is found.");
+        Room kitchen = new Room("Kitchen", "Welcome to the Kitchen. Take the key, and use it to free the princess when you find her.");
 
         Item key = new Item("key", "This is the key");
 
@@ -123,8 +132,8 @@ namespace CastleGrimtol.Project
 
         public void StartGame()
         {   
-            bool playing = true;
-            while(playing)
+            Playing = true;
+            while(Playing)
             {
                 //get user input
                 GetUserInput();
@@ -134,12 +143,38 @@ namespace CastleGrimtol.Project
 
         public void TakeItem(string itemName)
         {
+            Console.WriteLine("this is take!");
+            GetUserInput();
             
+        //  also remove the item from the rooms inventory
+
+            Item item = CurrentRoom.Items.Find(i => {
+                return i.Name == itemName;
+            });
+            if(item != null){
+                // if item exists, add to inventory
+            CurrentPlayer.Inventory.Add(item);
+            System.Console.WriteLine($"You added {item.Name} to your inventory.");
+            }else{
+                System.Console.WriteLine("What?");
+            }
+
+            Item currentItem = CurrentRoom.Items.Find(i=> {
+                return i.Name == itemName;
+            });
+            if(item != null){
+                CurrentRoom.Items.Remove(item);
+                System.Console.WriteLine($"You removed {item.Name} from the room!");
+            }
         }
 
         public void UseItem(string itemName)
         {
-            
+            Console.WriteLine("this is use");
+        }
+        public GameService(Player currPlayer)
+        {
+            CurrentPlayer = currPlayer;
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using CastleGrimtol.Project;
+using CastleGrimtol.Project.Models;
 
 namespace CastleGrimtol
 {
@@ -10,11 +11,13 @@ namespace CastleGrimtol
         
             Console.WriteLine("Welcome to the Game!");
             Console.WriteLine("What is your name?");
-            string currentPlayer = Console.ReadLine();
-            Console.WriteLine($"Welcome {currentPlayer}. Lets play a game.");
-            GameService gameService = new GameService();
+            string playerName = Console.ReadLine();
+            Player currentPlayer = new Player(playerName);
+            Console.WriteLine($"Welcome {playerName}. Lets play a game. Type a command to begin.");
+            GameService gameService = new GameService(currentPlayer);
             gameService.Setup();
             gameService.StartGame();
+            // gameService.TakeItem(itemName);
 
         }
     }
