@@ -14,5 +14,6 @@ namespace CastleGrimtol.Project.Models
 
         public string Name { get; set; }
         public string Description { get; set; }
+        public Room usableRoom { get; set; }
     }
 }

@@ -8,7 +8,8 @@ namespace CastleGrimtol
     {
         public static void Main(string[] args)
         {
-        
+
+            // GameService gameService = new GameService(player);
             Console.WriteLine("Welcome to the Game!");
             Console.WriteLine("What is your name?");
             string playerName = Console.ReadLine();
@@ -17,7 +18,7 @@ namespace CastleGrimtol
             GameService gameService = new GameService(currentPlayer);
             gameService.Setup();
             gameService.StartGame();
-            // gameService.TakeItem(itemName);
+            
 
         }
     }
