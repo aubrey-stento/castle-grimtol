@@ -63,8 +63,8 @@ namespace CastleGrimtol.Project
             if (CurrentRoom.Exits.ContainsKey(direction))
             {
                 CurrentRoom = CurrentRoom.Exits[direction];
-                if(CurrentRoom.Name == "basement"){
-                    System.Console.WriteLine("You died dork why did you go there");
+                if(CurrentRoom.Name == "Basement"){
+                    System.Console.WriteLine("You died.");
                     Quit();
                     return;
                 }
@@ -83,12 +83,12 @@ namespace CastleGrimtol.Project
         {
 
             System.Console.WriteLine(@"Here are your choices: 
-Look  
-Quit  
-Use  
-Go  
-Take
-Reset");
+Look - displays the current room's description 
+Quit - ends the game 
+Use - use the item you have in your inventory
+Go - go + direction sends player to room in that direction 
+Take - take an item from a room
+Reset - resets game to beginning");
             GetUserInput();
 
 
